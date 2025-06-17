@@ -6,14 +6,26 @@ export type PlayerConfig = {
     position: Vector,
     velocity: Vector,
     offset: Vector,
-    color:string,
+    color: string,
+    sprites:Sprites
+    scale:number
+    maxFrames: number;
+
 }
 
-export type SpriteConfig = {
+export type BGConfig = {
     position: Vector,
     imageSrc:string
 }
-
+export type sprite = {
+    // image: HTMLImageElement;
+    imageSrc: string;
+    Maxframes:number
+}
+export type Sprites = {
+    idle: sprite,
+    run:sprite,
+}
 export type Player = {
     position:Vector,
     velocity:Vector,

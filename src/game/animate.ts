@@ -1,7 +1,7 @@
 import { keys } from "./utils/controls";
 import { player, enemy } from "./classes/Fighter";
 import { GameFinished } from "./utils/stopGame";
-import { backGround } from "./classes/Sprite";
+import { backGround } from "./classes/Background";
 export function animate(c: CanvasRenderingContext2D) {
   let animationID = window.requestAnimationFrame(() => {
     animate(c);
@@ -13,10 +13,18 @@ export function animate(c: CanvasRenderingContext2D) {
   enemy.update(c);
   player.velocity.x = 0;
   enemy.velocity.x = 0;
+
+  
   if (keys.a.pressed && player.lastkey === "a") {
+
+player.switchSprite("run")
     player.velocity.x = -6;
   } else if (keys.d.pressed && player.lastkey === "d") {
-    player.velocity.x = 6;
+player.switchSprite("run")
+player.velocity.x = 6;
+  }
+  else {
+  player.switchSprite("idle")
   }
   if (keys.j.pressed && enemy.lastkey === "j") {
     enemy.velocity.x = -6;

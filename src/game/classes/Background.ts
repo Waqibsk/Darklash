@@ -1,12 +1,12 @@
 import { Vector } from "../../types/sprite";
-import { SpriteConfig } from "../../types/sprite";
+import { BGConfig } from "../../types/sprite";
 import bgImage from "../../assets/fightingbg.jpg"
-class Sprite{
+class BG{
     position:Vector
     height: number
     width:number
       image: HTMLImageElement;
-    constructor({ position,imageSrc }:SpriteConfig ) {
+    constructor({ position,imageSrc }:BGConfig ) {
         this.position = position;
         this.height = 80
         this.width = 70;  
@@ -20,7 +20,7 @@ c.drawImage(this.image,this.position.x,this.position.y,c.canvas.width,c.canvas.h
         this.draw(c)
     }
 }
-export const backGround = new Sprite({
+export const backGround = new BG({
     position: {
         x: 0,
         y:0,
