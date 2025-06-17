@@ -1,8 +1,7 @@
 import {SpriteConfig,Vector } from "../../types/sprite";
 import { RectangleCollison } from "../utils/rectangleCollison";
 import { gravity } from "../utils/constants";
-
-
+import { FinishGame } from "../utils/stopGame";
 
 
 class Sprite {
@@ -24,7 +23,7 @@ class Sprite {
     this.position = position;
     this.velocity = velocity;
     this.color = color;
-    this.height = 70;
+    this.height = 170;
     this.width = 60;
     this.lastkey;
     this.health = 100;
@@ -79,7 +78,6 @@ class Sprite {
           
         enemyHealthBar.style.width = enemy.health + '%';
         }
-        console.log("yo")
       }
 
     }
@@ -93,6 +91,42 @@ class Sprite {
         }
       }
     }
+  const time = document.getElementById("timer") as HTMLElement |null;
+if ((time && parseInt(time.innerText) === 0)|| (player.health===0) ||(enemy.health===0)) {
+  console.log("time up");
+
+
+  const gameOverBox = document.getElementById('gameOver') as HTMLElement | null;
+  const gameOverTitle = document.getElementById('gameOverTitle') as HTMLElement | null;
+
+  if (gameOverTitle && gameOverBox) {
+  if (time && parseInt(time.innerText) === 0) {
+
+    if (player.health === enemy.health) {
+        gameOverTitle.innerText = "TIED";
+    }
+    else if (player.health > enemy.health) {
+gameOverTitle.innerText="HERO WINS"
+    }
+    else {
+
+gameOverTitle.innerText="ENEMY WINS"
+    }
+  
+  }
+  else {
+    if (player.health === 0) {
+gameOverTitle.innerText="ENEMY WINS"
+    }
+    else if (enemy.health === 0) {
+gameOverTitle.innerText="HERO WINS"
+    }
+    }
+    FinishGame(true);
+  gameOverBox.classList.remove('hidden');
+  }
+}
+
     if (this.isAttacking) {
       setTimeout(() => {
   this.isAttacking=false
