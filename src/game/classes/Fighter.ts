@@ -1,10 +1,10 @@
-import {SpriteConfig,Vector } from "../../types/sprite";
+import {PlayerConfig,Vector } from "../../types/sprite";
 import { RectangleCollison } from "../utils/rectangleCollison";
 import { gravity } from "../utils/constants";
 import { FinishGame } from "../utils/stopGame";
 
 
-class Sprite {
+class Fighter {
     position:Vector;
   velocity: Vector;
   color: string;
@@ -19,7 +19,7 @@ class Sprite {
     width: number;
     height: number;
   };
-  constructor({ position, velocity, offset, color }: SpriteConfig) {
+  constructor({ position, velocity, offset, color }: PlayerConfig) {
     this.position = position;
     this.velocity = velocity;
     this.color = color;
@@ -135,13 +135,13 @@ gameOverTitle.innerText="HERO WINS"
     }
   }
 }
-export const player = new Sprite({
+export const player = new Fighter({
   position: { x: 0, y: 0 },
   velocity: { x: 0, y: 0 },
   offset: { x: -60, y: 0 },
   color: "pink",
 });
-export const enemy = new Sprite({
+export const enemy = new Fighter({
   position: { x: 560, y: 0 },
   velocity: { x: 0, y: 0 },
   offset: { x: 60, y: 0 },
