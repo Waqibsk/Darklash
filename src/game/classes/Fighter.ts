@@ -2,12 +2,13 @@ import { PlayerConfig, sprite, Vector } from "../../types/sprite";
 import { RectangleCollison } from "../utils/rectangleCollison";
 import { gravity } from "../utils/constants";
 import { FinishGame } from "../utils/stopGame";
-import heroJump from "../../assets/Knight_1/Jump.png"
+import heroJump from "../../assets/Knight_1/Jump.png";
 import { Sprites } from "../../types/sprite";
 import heroIdle from "../../assets/Knight_1/Idle2.png";
 import enemyIdle from "../../assets/Knight_2/Idle2.png";
 import enemyRun from "../../assets/Knight_2/Run.png";
 import heroRun from "../../assets/Knight_1/Run.png";
+import heroAttack from "../../assets/Knight_1/Attack 1.png";
 class Fighter {
   position: Vector;
   velocity: Vector;
@@ -31,7 +32,8 @@ class Fighter {
   frameDelay: number;
   frameCount: number;
   sprites: Sprites;
-  offset:Vector
+  offset: Vector;
+  currentSprite: string;
   constructor({
     position,
     velocity,
@@ -40,6 +42,7 @@ class Fighter {
     maxFrames,
     offset,
     color,
+    attackOffset,
   }: PlayerConfig) {
     this.position = position;
     this.velocity = velocity;
@@ -47,7 +50,7 @@ class Fighter {
     this.height = 170;
     this.width = 60;
     this.lastkey;
-    this.offset=offset
+    this.offset = offset;
     this.health = 100;
     this.isAttacking = false;
     this.attackBox = {
@@ -55,7 +58,7 @@ class Fighter {
         x: this.position.x,
         y: this.position.y,
       },
-      offset: offset,
+      offset: attackOffset,
       width: 100,
       height: 30,
     };
@@ -65,44 +68,48 @@ class Fighter {
     this.scale = scale;
     this.maxFrames = maxFrames;
     this.currentFrame = 0;
-    this.frameDelay = 25;
+    this.frameDelay = 15;
     this.frameCount = 0;
+    this.currentSprite="idle"
   }
 
   draw(c: CanvasRenderingContext2D) {
-    const viewWidth= (this.image.width / this.maxFrames )
-    console.log("view",viewWidth)
+    const viewWidth = this.image.width / this.maxFrames;
     c.drawImage(
       this.image,
       //croping image
-      this.currentFrame *viewWidth
-      ,
-    0,
+      this.currentFrame * viewWidth,
+      0,
       viewWidth,
       this.image.height,
 
       //croping ended
-      this.position.x-this.offset.x,
-      this.position.y-this.offset.y,
-      (viewWidth) *this.scale,
-      this.image.height *this.scale
+      this.position.x - this.offset.x,
+      this.position.y - this.offset.y,
+      viewWidth * this.scale,
+      this.image.height * this.scale
     );
   }
 
   update(c: CanvasRenderingContext2D) {
     this.draw(c);
-    
-      this.frameCount++;
+
+    this.frameCount++;
     if (this.frameCount % this.frameDelay === 0) {
       this.currentFrame = (this.currentFrame + 1) % this.maxFrames;
     }
     this.attackBox.position.x = this.position.x - this.attackBox.offset.x;
     this.attackBox.position.y = this.position.y - this.attackBox.offset.y;
+    c.fillStyle = "pink";
+    c.fillRect(this.attackBox.position.x,this.attackBox.position.y,this.attackBox.width,this.attackBox.height)
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
     // console.log(this.velocity.y);
 
-    if (this.position.y + this.height + this.velocity.y >= c.canvas.height-40) {
+    if (
+      this.position.y + this.height + this.velocity.y >=
+      c.canvas.height - 40
+    ) {
       this.velocity.y = 0;
     } else {
       this.velocity.y += gravity;
@@ -111,7 +118,7 @@ class Fighter {
     if (
       RectangleCollison(player, enemy) &&
       this.color === player.color &&
-      player.isAttacking
+      player.isAttacking && player.currentFrame===4
     ) {
       console.log("hero  attacked:");
       enemy.health -= 20;
@@ -140,13 +147,16 @@ class Fighter {
         }
       }
     }
+
+  if(player.isAttacking && player.currentFrame === 4 ) {
+player.isAttacking=false
+  }
     const time = document.getElementById("timer") as HTMLElement | null;
     if (
       (time && parseInt(time.innerText) === 0) ||
       player.health === 0 ||
       enemy.health === 0
     ) {
-      console.log("time up");
 
       const gameOverBox = document.getElementById(
         "gameOver"
@@ -175,46 +185,52 @@ class Fighter {
         // gameOverBox.classList.remove("hidden");
       }
     }
+  }
 
-    if (this.isAttacking) {
-      setTimeout(() => {
-        this.isAttacking = false;
-      }, 0.1);
-    }
+
+  attack() {
+    this.isAttacking = true;
+    this.switchSprite("attack1")
+   
+    console.log("isattacking jll",this.isAttacking)
   }
 
   switchSprite(sprite: string) {
-switch (sprite) {
-  case "idle":
-    if (player.image.src != this.sprites.idle.imageSrc) {
-    player.image.src = this.sprites.idle.imageSrc
-      player.maxFrames = this.sprites.idle.Maxframes;
+    if(this.currentSprite==="attack1" && this.currentFrame<this.sprites.attack1.Maxframes -1) return
+    switch (sprite) {
+      case "idle":
+        if (this.currentSprite!=="idle") {
+          player.image.src = this.sprites.idle.imageSrc;
+          player.maxFrames = this.sprites.idle.Maxframes;
+
+          this.currentFrame=0
+          this.currentSprite="idle"
+        }
+
+        break;
+      case "run":
+        if (this.currentSprite!=="run") {
+          player.image.src = this.sprites.run.imageSrc;
+          player.maxFrames = this.sprites.run.Maxframes;
+          this.currentSprite="run"
+          this.currentFrame=0
+        }
+
+        break;
+      case "attack1":
+        if (this.currentSprite!=="attack1") {
+          player.image.src = this.sprites.attack1.imageSrc;
+          player.maxFrames = this.sprites.attack1.Maxframes;
+          this.currentFrame=0
+          this.currentSprite="attack1"
+        }
+        
+
+        break;
+      default:
+        break;
     }
-
-    break;
-  case "run":
-      if (player.image.src != this.sprites.run.imageSrc) {
-    player.image.src = this.sprites.run.imageSrc
-    player.maxFrames = this.sprites.run.Maxframes; 
-
-    }
-
-    break;
-  case "jump":
-      if (player.image.src != this.sprites.run.imageSrc) {
-    player.image.src = this.sprites.run.imageSrc
-    player.maxFrames = this.sprites.run.Maxframes; 
-
-    }
-
-    break;
-  default:
-    break;
-}
-
-
-}
-
+  }
 }
 export const player = new Fighter({
   position: { x: 0, y: 0 },
@@ -230,9 +246,17 @@ export const player = new Fighter({
       imageSrc: heroRun,
       Maxframes: 7,
     },
+    attack1: {
+      imageSrc: heroAttack,
+      Maxframes:5
+    },
+  },
+  attackOffset: {
+    x: -50,
+    y:-80,
   },
   maxFrames: 4,
-  scale:2,
+  scale: 2,
 });
 export const enemy = new Fighter({
   position: { x: 560, y: 0 },
@@ -248,6 +272,14 @@ export const enemy = new Fighter({
       imageSrc: enemyRun,
       Maxframes: 7,
     },
+    attack1: {
+      imageSrc: heroAttack,
+      Maxframes:5
+    }
+  },
+ attackOffset: {
+    x: 0,
+    y:0,
   },
   maxFrames: 4,
   scale: 2,

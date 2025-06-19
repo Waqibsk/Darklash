@@ -41,7 +41,7 @@ export function setControls(player: Player, enemy: Player) {
         enemy.velocity.y = -15;
         break;
       case "e":
-        player.isAttacking = true;
+        player.attack()
         break;
       case " ":
         enemy.isAttacking = true;

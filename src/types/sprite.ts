@@ -8,6 +8,7 @@ export type PlayerConfig = {
     offset: Vector,
     color: string,
     sprites:Sprites
+   attackOffset:Vector 
     scale:number
     maxFrames: number;
 
@@ -24,18 +25,22 @@ export type sprite = {
 }
 export type Sprites = {
     idle: sprite,
-    run:sprite,
+    run: sprite,
+    attack1:sprite
 }
 export type Player = {
     position:Vector,
+    
     velocity:Vector,
     color: string,
     height: number,
     width:number,
     lastkey: string,
+    
     attackBox:attackBox,
     isAttacking: boolean,
     draw: (c:CanvasRenderingContext2D) => void,
     update: (c:CanvasRenderingContext2D) => void,
+    attack: () => void;
     
 }

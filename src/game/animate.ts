@@ -14,9 +14,7 @@ export function animate(c: CanvasRenderingContext2D) {
   player.velocity.x = 0;
   enemy.velocity.x = 0;
 
-  
   if (keys.a.pressed && player.lastkey === "a") {
-
 player.switchSprite("run")
     player.velocity.x = -6;
   } else if (keys.d.pressed && player.lastkey === "d") {
@@ -26,7 +24,8 @@ player.velocity.x = 6;
   else {
   player.switchSprite("idle")
   }
-  if (keys.j.pressed && enemy.lastkey === "j") {
+ console.log("current sprite",player.currentSprite)
+ if (keys.j.pressed && enemy.lastkey === "j") {
     enemy.velocity.x = -6;
   } else if (keys.l.pressed && enemy.lastkey === "l") {
     enemy.velocity.x = 6;
