@@ -196,8 +196,8 @@ this.isAttacking=false
             gameOverTitle.innerText = "HERO WINS";
           }
         }
-        // FinishGame(true);
-        // gameOverBox.classList.remove("hidden");
+        FinishGame(true);
+        gameOverBox.classList.remove("hidden");
       }
     }
   }

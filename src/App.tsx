@@ -9,7 +9,7 @@ function App() {
       <div className='w-screen relative ' >
 <TopBar/>
 
-        <div className='absolute  top-[40%] left-[32%] bg-black '>
+        <div className='absolute  top-[40%] left-[32%] '>
 <GameOver />
 </div>
 <Canvas/>

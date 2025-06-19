@@ -1,6 +1,6 @@
 import { Vector } from "../../types/sprite";
 import { BGConfig } from "../../types/sprite";
-import bgImage from "../../assets/background/bg.jpg"
+import bgImage from "../../assets/background/bg6.png"
 class BG{
     position:Vector
     height: number
@@ -8,7 +8,7 @@ class BG{
       image: HTMLImageElement;
     constructor({ position,imageSrc }:BGConfig ) {
         this.position = position;
-        this.height = 80
+        this.height = 180
         this.width = 70;  
         this.image=new Image()
         this.image.src=imageSrc
