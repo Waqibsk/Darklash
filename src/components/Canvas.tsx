@@ -19,6 +19,6 @@ export default function Canvas() {
     },[])
 
   return (
-  <canvas ref={canvasRef}/>   
+  <canvas ref={canvasRef} />   
   )
 }

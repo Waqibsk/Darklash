@@ -6,10 +6,10 @@ import TopBar from './ui/TopBar'
 function App() {
   return (
     <>
-      <div className='w-screen relative'>
+      <div className='w-screen relative ' >
 <TopBar/>
 
-        <div className='absolute  top-[40%] left-[32%]'>
+        <div className='absolute  top-[40%] left-[32%] bg-black '>
 <GameOver />
 </div>
 <Canvas/>

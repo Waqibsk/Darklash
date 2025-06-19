@@ -44,7 +44,7 @@ export function setControls(player: Player, enemy: Player) {
         player.attack()
         break;
       case " ":
-        enemy.isAttacking = true;
+        enemy.attack()
         break;
     }
   });

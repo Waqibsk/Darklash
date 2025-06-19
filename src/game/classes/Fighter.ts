@@ -5,10 +5,12 @@ import { FinishGame } from "../utils/stopGame";
 import heroJump from "../../assets/Knight_1/Jump.png";
 import { Sprites } from "../../types/sprite";
 import heroIdle from "../../assets/Knight_1/Idle2.png";
-import enemyIdle from "../../assets/Knight_2/Idle2.png";
+import enemyIdle from "../../assets/Knight_2/Idle3.png";
 import enemyRun from "../../assets/Knight_2/Run.png";
 import heroRun from "../../assets/Knight_1/Run.png";
 import heroAttack from "../../assets/Knight_1/Attack 1.png";
+
+import enemyAttack from "../../assets/Knight_2/Attack 1.png";
 class Fighter {
   position: Vector;
   velocity: Vector;
@@ -17,7 +19,7 @@ class Fighter {
   width: number = 60;
   lastkey: string = "";
   health: number = 100;
-
+hasHit:boolean
   isAttacking: boolean = false;
   attackBox: {
     position: Vector;
@@ -50,6 +52,7 @@ class Fighter {
     this.height = 170;
     this.width = 60;
     this.lastkey;
+    this.hasHit=false
     this.offset = offset;
     this.health = 100;
     this.isAttacking = false;
@@ -68,7 +71,7 @@ class Fighter {
     this.scale = scale;
     this.maxFrames = maxFrames;
     this.currentFrame = 0;
-    this.frameDelay = 15;
+    this.frameDelay = 8;
     this.frameCount = 0;
     this.currentSprite="idle"
   }
@@ -100,8 +103,7 @@ class Fighter {
     }
     this.attackBox.position.x = this.position.x - this.attackBox.offset.x;
     this.attackBox.position.y = this.position.y - this.attackBox.offset.y;
-    c.fillStyle = "pink";
-    c.fillRect(this.attackBox.position.x,this.attackBox.position.y,this.attackBox.width,this.attackBox.height)
+    // c.fillStyle = "pink"; c.fillRect(this.attackBox.position.x,this.attackBox.position.y,this.attackBox.width,this.attackBox.height)
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
     // console.log(this.velocity.y);
@@ -118,9 +120,10 @@ class Fighter {
     if (
       RectangleCollison(player, enemy) &&
       this.color === player.color &&
-      player.isAttacking && player.currentFrame===4
+      player.isAttacking && player.currentFrame===4 && !player.hasHit
     ) {
       console.log("hero  attacked:");
+      player.hasHit=true
       enemy.health -= 20;
       const enemyHealthBar = document.getElementById(
         "enemy-health"
@@ -134,9 +137,10 @@ class Fighter {
     if (
       RectangleCollison(enemy, player) &&
       this.color == enemy.color &&
-      enemy.isAttacking
+      enemy.isAttacking && enemy.currentFrame==2 && !enemy.hasHit
     ) {
       console.log("enemy attacked");
+      enemy.hasHit=true
       player.health -= 20;
       const playerHealthBar = document.getElementById(
         "player-health"
@@ -148,8 +152,9 @@ class Fighter {
       }
     }
 
-  if(player.isAttacking && player.currentFrame === 4 ) {
-player.isAttacking=false
+  if(this.isAttacking && this.currentFrame === 4 ) {
+this.isAttacking=false
+this.hasHit=false
   }
     const time = document.getElementById("timer") as HTMLElement | null;
     if (
@@ -200,8 +205,8 @@ player.isAttacking=false
     switch (sprite) {
       case "idle":
         if (this.currentSprite!=="idle") {
-          player.image.src = this.sprites.idle.imageSrc;
-          player.maxFrames = this.sprites.idle.Maxframes;
+          this.image.src = this.sprites.idle.imageSrc;
+          this.maxFrames = this.sprites.idle.Maxframes;
 
           this.currentFrame=0
           this.currentSprite="idle"
@@ -210,8 +215,8 @@ player.isAttacking=false
         break;
       case "run":
         if (this.currentSprite!=="run") {
-          player.image.src = this.sprites.run.imageSrc;
-          player.maxFrames = this.sprites.run.Maxframes;
+          this.image.src = this.sprites.run.imageSrc;
+          this.maxFrames = this.sprites.run.Maxframes;
           this.currentSprite="run"
           this.currentFrame=0
         }
@@ -219,8 +224,8 @@ player.isAttacking=false
         break;
       case "attack1":
         if (this.currentSprite!=="attack1") {
-          player.image.src = this.sprites.attack1.imageSrc;
-          player.maxFrames = this.sprites.attack1.Maxframes;
+          this.image.src = this.sprites.attack1.imageSrc;
+          this.maxFrames = this.sprites.attack1.Maxframes;
           this.currentFrame=0
           this.currentSprite="attack1"
         }
@@ -235,7 +240,7 @@ player.isAttacking=false
 export const player = new Fighter({
   position: { x: 0, y: 0 },
   velocity: { x: 0, y: 0 },
-  offset: { x: 0, y: 0 },
+  offset: { x: 0, y: 60 },
   color: "pink",
   sprites: {
     idle: {
@@ -256,12 +261,12 @@ export const player = new Fighter({
     y:-80,
   },
   maxFrames: 4,
-  scale: 2,
+  scale: 3,
 });
 export const enemy = new Fighter({
   position: { x: 560, y: 0 },
   velocity: { x: 0, y: 0 },
-  offset: { x: 0, y: 0 },
+  offset: { x: 0, y: 60 },
   color: "orange",
   sprites: {
     idle: {
@@ -273,14 +278,14 @@ export const enemy = new Fighter({
       Maxframes: 7,
     },
     attack1: {
-      imageSrc: heroAttack,
+      imageSrc: enemyAttack,
       Maxframes:5
     }
   },
  attackOffset: {
     x: 0,
-    y:0,
+    y:-80,
   },
   maxFrames: 4,
-  scale: 2,
+  scale: 3,
 });

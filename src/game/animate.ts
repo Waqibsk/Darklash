@@ -26,9 +26,15 @@ player.velocity.x = 6;
   }
  console.log("current sprite",player.currentSprite)
  if (keys.j.pressed && enemy.lastkey === "j") {
+   enemy.switchSprite("run");
+
     enemy.velocity.x = -6;
   } else if (keys.l.pressed && enemy.lastkey === "l") {
+   enemy.switchSprite("run");
     enemy.velocity.x = 6;
+  }
+ else {
+enemy.switchSprite("idle")
   }
   if (GameFinished) {
     window.cancelAnimationFrame(animationID);
