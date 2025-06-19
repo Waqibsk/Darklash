@@ -8,7 +8,7 @@ import heroIdle from "../../assets/Knight_1/Idle2.png";
 import enemyIdle from "../../assets/Knight_2/Idle3.png";
 import enemyRun from "../../assets/Knight_2/Run.png";
 import heroRun from "../../assets/Knight_1/Run.png";
-import heroAttack from "../../assets/Knight_1/Attack 1.png";
+import heroAttack from "../../assets/Knight_1/Attack 2.png";
 
 import enemyAttack from "../../assets/Knight_2/Attack 1.png";
 class Fighter {
@@ -28,6 +28,7 @@ hasHit:boolean
     height: number;
   };
   image: HTMLImageElement;
+  animationComplete: boolean;
   scale: number;
   maxFrames: number;
   currentFrame: number;
@@ -56,13 +57,14 @@ hasHit:boolean
     this.offset = offset;
     this.health = 100;
     this.isAttacking = false;
+    this.animationComplete = false;
     this.attackBox = {
       position: {
         x: this.position.x,
         y: this.position.y,
       },
       offset: attackOffset,
-      width: 100,
+      width: 120,
       height: 30,
     };
     this.sprites = sprites;
@@ -99,7 +101,13 @@ hasHit:boolean
 
     this.frameCount++;
     if (this.frameCount % this.frameDelay === 0) {
-      this.currentFrame = (this.currentFrame + 1) % this.maxFrames;
+      if (this.currentFrame < this.maxFrames - 1) {
+      this.currentFrame++
+    }
+      else {
+        this.animationComplete=true
+        this.currentFrame = 0;
+    }
     }
     this.attackBox.position.x = this.position.x - this.attackBox.offset.x;
     this.attackBox.position.y = this.position.y - this.attackBox.offset.y;
@@ -120,7 +128,7 @@ hasHit:boolean
     if (
       RectangleCollison(player, enemy) &&
       this.color === player.color &&
-      player.isAttacking && player.currentFrame===4 && !player.hasHit
+      player.isAttacking && player.currentFrame===this.sprites.attack1.Maxframes-1 && !player.hasHit
     ) {
       console.log("hero  attacked:");
       player.hasHit=true
@@ -152,9 +160,11 @@ hasHit:boolean
       }
     }
 
-  if(this.isAttacking && this.currentFrame === 4 ) {
+  if(this.isAttacking &&this.currentFrame===this.maxFrames-1 ) {
 this.isAttacking=false
-this.hasHit=false
+    this.hasHit = false
+    console.log("HI")
+    this.switchSprite("idle")
   }
     const time = document.getElementById("timer") as HTMLElement | null;
     if (
@@ -194,14 +204,14 @@ this.hasHit=false
 
 
   attack() {
+    this.animationComplete=false
     this.isAttacking = true;
     this.switchSprite("attack1")
    
-    console.log("isattacking jll",this.isAttacking)
   }
 
   switchSprite(sprite: string) {
-    if(this.currentSprite==="attack1" && this.currentFrame<this.sprites.attack1.Maxframes -1) return
+    if(this.currentSprite==="attack1"&&!this.animationComplete ) return
     switch (sprite) {
       case "idle":
         if (this.currentSprite!=="idle") {
@@ -253,7 +263,7 @@ export const player = new Fighter({
     },
     attack1: {
       imageSrc: heroAttack,
-      Maxframes:5
+      Maxframes:4
     },
   },
   attackOffset: {
