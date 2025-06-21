@@ -5,16 +5,17 @@ import TopBar from './ui/TopBar'
 import Menu from './components/Menu'
 import Rooms from './components/Rooms'
 import { useState } from 'react'
-import { io } from 'socket.io-client'
+import { useSocket } from './components/SocketProvider'
 
 function App() {
-const socket = io("http://localhost:3000");
   const [mode, setMode] = useState("");
   return (
 
     <>
       {!mode ? <Menu setMode={setMode} /> :
-        mode !== "single" ? <Rooms/> :
+        mode !== "single"? 
+          
+        ( <Rooms/> ):
 
         <div className='w-screen relative ' >
           <TopBar />

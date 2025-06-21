@@ -1,4 +1,5 @@
 import { attackBox } from "./attackBox"
+import "socket.io-client"
 export type Vector = {
     x:number,y:number
 }
@@ -44,3 +45,10 @@ export type Player = {
     attack: () => void;
     
 }
+
+declare module  "socket.io-client"{
+    interface Socket{
+        isPlaying:boolean
+    }
+
+  }
