@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSocket } from './SocketProvider'
 import GameMP from '../game/multiplayer/GameMP'
+import roomBG from "../assets/background/menu/menu2.jpg"
 export default function Rooms() {
   const [waiting,setWaiting]=useState(false)
   const [roomId,setRoomId]=useState("")
@@ -31,7 +32,6 @@ return () => {
         setRole("player");
         }
       }
-      localStorage.setItem("role1","player")
     });
     
   }
@@ -48,7 +48,6 @@ if (res.size === 2) {
 
  );
 
-      localStorage.setItem("role2","enemy")
 }
   function deleteRoom(roomId: string) {
   socket.emit("deleteRoom",roomId)
@@ -57,20 +56,21 @@ if (res.size === 2) {
 }
   return (
 
-    <div className='flex justify-center items-center min-h-[100vh] ' >
-
-          <div className='   text-white  '>
+    <div className="relative">
+      {isPlaying ? "" : (<img src={roomBG} alt="" className='w-full' />)}
+      {isPlaying ? <GameMP role={role ?? ""} /> : (
+           <div className=' bg-[rgb(0,0,0,0.8)] p-4 text-white  absolute top-[40%] left-[40%]'>
         {waiting &&!isPlaying ? (
-          <div>
-             <span className='font-bold'>{roomId}
-            </span>
-            <div className='bg-white text-black cursor-pointer' onClick={() => {
+          <div className=''>
+            <div
+              className='font-bold m-2'> Share Room ID: <br />
+              {roomId}
+            </div>
+            <div className=' cursor-pointer bg-white text-black m-2 p-2 w-[40%]' onClick={() => {
               deleteRoom(roomId)}}>
-              delete room 
+              Delete Room 
             </div>          </div>
-        ) :isPlaying? (
-        <GameMP role={role ?? ""} />
-        ):(
+        ) :(
           <div>
  <div onClick={createRoom} className='cursor-pointer'>
              Create Room 
@@ -80,7 +80,7 @@ if (res.size === 2) {
           Join Room
           </div>
           <div className='px-6'>
-            <input type="text" placeholder='enter room id ' value={roomId} onChange={(e) => {
+            <input type="text" placeholder='Enter room id ' className='p-2' value={roomId} onChange={(e) => {
               setRoomId(e.target.value)
                       }} />
                   </div>
@@ -92,6 +92,11 @@ if (res.size === 2) {
               }
              
           </div> 
+       
+
+      )} 
+        
+    
     </div>
   )
 }
