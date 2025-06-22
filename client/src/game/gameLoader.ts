@@ -1,7 +1,6 @@
 import { player, enemy } from "./classes/Fighter";
 import { animate,animateMP } from "./animate";
 import { setControls,setControlsMP } from "./utils/controls";
-import { useSocket } from "../components/SocketProvider";
 import { Socket } from "socket.io-client";
 
 export function startGame(c: CanvasRenderingContext2D) {

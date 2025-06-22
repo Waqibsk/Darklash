@@ -2,10 +2,9 @@ import "./App.css";
 import Canvas from "./components/canvas/Canvas";
 import GameOver from "./ui/GameOver";
 import TopBar from "./ui/TopBar";
-import Menu from "./components/Menu";
+import Menu from "./ui/Menu";
 import Rooms from "./components/Rooms";
 import { useState } from "react";
-import { useSocket } from "./components/SocketProvider";
 
 function App() {
   const [mode, setMode] = useState("");

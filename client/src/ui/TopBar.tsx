@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 export let timerId: ReturnType<typeof setInterval> | null = null;
 export default function TopBar() {
-  const [seconds, setSeconds] = useState(19960);
+  const [seconds, setSeconds] = useState(60);
   useEffect(() => {
     if (seconds <= 0) {
       return;

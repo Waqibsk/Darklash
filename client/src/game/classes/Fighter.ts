@@ -2,7 +2,6 @@ import { PlayerConfig, sprite, Vector } from "../../types/sprite";
 import { RectangleCollison } from "../utils/rectangleCollison";
 import { gravity } from "../utils/constants";
 import { FinishGame } from "../utils/stopGame";
-import heroJump from "../../assets/Knight_1/Jump.png";
 import { Sprites } from "../../types/sprite";
 import heroIdle from "../../assets/Knight_1/Idle2.png";
 import enemyIdle from "../../assets/Knight_2/Idle3.png";

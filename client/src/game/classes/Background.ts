@@ -1,6 +1,6 @@
 import { Vector } from "../../types/sprite";
 import { BGConfig } from "../../types/sprite";
-import bgImage from "../../assets/background/bg6.png"
+import bgImage from "../../assets/background/bg5.png"
 class BG{
     position:Vector
     height: number
