@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useSocket } from './SocketProvider'
-
+import GameMP from '../game/multiplayer/GameMP'
 export default function Rooms() {
   const [waiting,setWaiting]=useState(false)
   const [roomId,setRoomId]=useState("")
+const [role, setRole] = useState<"player"|"enemy"|null>(null);
   const socket = useSocket()
   const [isPlaying, setIsPlaying] = useState(false)
 
@@ -19,21 +20,35 @@ export default function Rooms() {
 return () => {
       socket.off("gameStarted", handleGameStarted);
     };
-  },[roomId,socket])
+  },[roomId,socket,role])
 
   function createRoom() {
     socket.emit("createRoom", (res: any) => {
       setRoomId(res.roomId)
       setWaiting(true)
-      
+      if (res.size === 1) {
+        if (!role) {
+        setRole("player");
+        }
+      }
+      localStorage.setItem("role1","player")
     });
     
   }
  
   function joinRoom(roomId: string) {
-    socket.emit("joinRoom", roomId
+    socket.emit("joinRoom", roomId, (res: any) => {
+if (res.size === 2) {
+        if (!role) {
+
+        setRole("enemy");
+        }
+      }
+    }
+
  );
 
+      localStorage.setItem("role2","enemy")
 }
   function deleteRoom(roomId: string) {
   socket.emit("deleteRoom",roomId)
@@ -47,17 +62,14 @@ return () => {
           <div className='   text-white  '>
         {waiting &&!isPlaying ? (
           <div>
-            waiting for others... <br />
-ROOM ID: <span className='font-bold'> {roomId}
+             <span className='font-bold'>{roomId}
             </span>
             <div className='bg-white text-black cursor-pointer' onClick={() => {
               deleteRoom(roomId)}}>
               delete room 
             </div>          </div>
         ) :isPlaying? (
-            <div>
-              game started
-        </div>
+        <GameMP role={role ?? ""} />
         ):(
           <div>
  <div onClick={createRoom} className='cursor-pointer'>

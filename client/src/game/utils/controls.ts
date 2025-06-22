@@ -67,3 +67,34 @@ export function setControls(player: Player, enemy: Player) {
     }
   });
 }
+export function setControlsMP(fighter: Player) {
+  window.addEventListener("keydown", (event) => {
+    switch (event.key) {
+      case "a":
+        keys.a.pressed = true;
+        fighter.lastkey = "a";
+        break;
+      case "d":
+        keys.d.pressed = true;
+        fighter.lastkey = "d";
+        break;
+      case "w":
+        fighter.velocity.y = -15;
+        break;
+     case "e":
+        fighter.attack()
+        break;
+         }
+  });
+  window.addEventListener("keyup", (event) => {
+    switch (event.key) {
+      case "a":
+        keys.a.pressed = false;
+
+        break;
+      case "d":
+        keys.d.pressed = false;
+        break;
+         }
+  });
+}

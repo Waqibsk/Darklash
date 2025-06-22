@@ -1,6 +1,7 @@
 import "./types/socket";
 import { Socket } from "socket.io";
 import type { Room } from "./types/room";
+import { createVerify } from "crypto";
 const express = require('express');
 const app = express();
 const http = require('http');
@@ -43,7 +44,7 @@ socket.isPlaying=false
 
       }
    console.log("all rooms",rooms)
-})
+  })
   socket.on("deleteRoom", (roomId:string) => {
     if (rooms[roomId]) {
       delete rooms[roomId];
@@ -66,9 +67,12 @@ socket.isPlaying=false
     }
     console.log("created room with id",room.id)
     rooms[room.id] = room;
+
     joinRoom(socket, room);
+
+    socket.roomId = room.id;
     console.log("roomsize is this ", room.sockets.length);
-    cb({ success: "true", roomId: room.id });
+    cb({ success: "true", roomId: room.id,size:room.sockets.length});
 })
   
   socket.on('joinRoom', (roomId, cb) => {
@@ -87,12 +91,26 @@ socket.isPlaying=false
  socket.roomId=roomId
     console.log("joined room ", room.id)
     console.log("room size ", room.sockets.length)
+    
+  cb({roomId,role:"enemy",size:room.sockets.length})
+
     if (room.sockets.length === 2) {
     io.to(room.id).emit("gameStarted");
   }
   })
+  socket.on("updateFighters", (data1) => {
+    socket.to(socket.roomId).emit("updatingFighters", data1);
+})
+
+
+
   console.log('a user connected');
 });
+
+
+
+
+
 server.listen(3000, () => {
   console.log('listening on *:3000');
 });

@@ -19,7 +19,7 @@ class Fighter {
   width: number = 60;
   lastkey: string = "";
   health: number = 100;
-hasHit:boolean
+  hasHit: boolean;
   isAttacking: boolean = false;
   attackBox: {
     position: Vector;
@@ -53,7 +53,7 @@ hasHit:boolean
     this.height = 170;
     this.width = 60;
     this.lastkey;
-    this.hasHit=false
+    this.hasHit = false;
     this.offset = offset;
     this.health = 100;
     this.isAttacking = false;
@@ -75,7 +75,7 @@ hasHit:boolean
     this.currentFrame = 0;
     this.frameDelay = 8;
     this.frameCount = 0;
-    this.currentSprite="idle"
+    this.currentSprite = "idle";
   }
 
   draw(c: CanvasRenderingContext2D) {
@@ -102,12 +102,11 @@ hasHit:boolean
     this.frameCount++;
     if (this.frameCount % this.frameDelay === 0) {
       if (this.currentFrame < this.maxFrames - 1) {
-      this.currentFrame++
-    }
-      else {
-        this.animationComplete=true
+        this.currentFrame++;
+      } else {
+        this.animationComplete = true;
         this.currentFrame = 0;
-    }
+      }
     }
     this.attackBox.position.x = this.position.x - this.attackBox.offset.x;
     this.attackBox.position.y = this.position.y - this.attackBox.offset.y;
@@ -128,10 +127,12 @@ hasHit:boolean
     if (
       RectangleCollison(player, enemy) &&
       this.color === player.color &&
-      player.isAttacking && player.currentFrame===this.sprites.attack1.Maxframes-1 && !player.hasHit
+      player.isAttacking &&
+      player.currentFrame === this.sprites.attack1.Maxframes - 1 &&
+      !player.hasHit
     ) {
       console.log("hero  attacked:");
-      player.hasHit=true
+      player.hasHit = true;
       enemy.health -= 20;
       const enemyHealthBar = document.getElementById(
         "enemy-health"
@@ -145,10 +146,12 @@ hasHit:boolean
     if (
       RectangleCollison(enemy, player) &&
       this.color == enemy.color &&
-      enemy.isAttacking && enemy.currentFrame==2 && !enemy.hasHit
+      enemy.isAttacking &&
+      enemy.currentFrame == 2 &&
+      !enemy.hasHit
     ) {
       console.log("enemy attacked");
-      enemy.hasHit=true
+      enemy.hasHit = true;
       player.health -= 20;
       const playerHealthBar = document.getElementById(
         "player-health"
@@ -160,19 +163,18 @@ hasHit:boolean
       }
     }
 
-  if(this.isAttacking &&this.currentFrame===this.maxFrames-1 ) {
-this.isAttacking=false
-    this.hasHit = false
-    console.log("HI")
-    this.switchSprite("idle")
-  }
+    if (this.isAttacking && this.currentFrame === this.maxFrames - 1) {
+      this.isAttacking = false;
+      this.hasHit = false;
+      console.log("HI");
+      this.switchSprite("idle");
+    }
     const time = document.getElementById("timer") as HTMLElement | null;
     if (
       (time && parseInt(time.innerText) === 0) ||
       player.health === 0 ||
       enemy.health === 0
     ) {
-
       const gameOverBox = document.getElementById(
         "gameOver"
       ) as HTMLElement | null;
@@ -202,49 +204,68 @@ this.isAttacking=false
     }
   }
 
-
   attack() {
-    this.animationComplete=false
+    this.animationComplete = false;
     this.isAttacking = true;
-    this.switchSprite("attack1")
-   
+    this.switchSprite("attack1");
   }
 
   switchSprite(sprite: string) {
-    if(this.currentSprite==="attack1"&&!this.animationComplete ) return
+    if (this.currentSprite === "attack1" && !this.animationComplete) return;
     switch (sprite) {
       case "idle":
-        if (this.currentSprite!=="idle") {
+        if (this.currentSprite !== "idle") {
           this.image.src = this.sprites.idle.imageSrc;
           this.maxFrames = this.sprites.idle.Maxframes;
 
-          this.currentFrame=0
-          this.currentSprite="idle"
+          this.currentFrame = 0;
+          this.currentSprite = "idle";
         }
 
         break;
       case "run":
-        if (this.currentSprite!=="run") {
+        if (this.currentSprite !== "run") {
           this.image.src = this.sprites.run.imageSrc;
           this.maxFrames = this.sprites.run.Maxframes;
-          this.currentSprite="run"
-          this.currentFrame=0
+          this.currentSprite = "run";
+          this.currentFrame = 0;
         }
 
         break;
       case "attack1":
-        if (this.currentSprite!=="attack1") {
+        if (this.currentSprite !== "attack1") {
           this.image.src = this.sprites.attack1.imageSrc;
           this.maxFrames = this.sprites.attack1.Maxframes;
-          this.currentFrame=0
-          this.currentSprite="attack1"
+          this.currentFrame = 0;
+          this.currentSprite = "attack1";
         }
-        
 
         break;
       default:
         break;
     }
+  }
+
+  toJSON() {
+    return {
+      position: this.position,
+      velocity: this.velocity,
+      currentSprite: this.currentSprite,
+      currentFrame: this.currentFrame,
+      isAttacking: this.isAttacking,
+      health: this.health,
+    };
+  }
+
+  updateFromJSON(data: any) {
+    this.position = data.position;
+    this.velocity = data.velocity;
+    this.health = data.health;
+    this.isAttacking = data.isAttacking;
+    if (this.currentSprite !== data.currentSprite) {
+      this.switchSprite(data.currentSprite);
+    }
+    this.currentFrame = data.currentFrame;
   }
 }
 export const player = new Fighter({
@@ -263,12 +284,12 @@ export const player = new Fighter({
     },
     attack1: {
       imageSrc: heroAttack,
-      Maxframes:4
+      Maxframes: 4,
     },
   },
   attackOffset: {
     x: -50,
-    y:-80,
+    y: -80,
   },
   maxFrames: 4,
   scale: 3,
@@ -289,12 +310,12 @@ export const enemy = new Fighter({
     },
     attack1: {
       imageSrc: enemyAttack,
-      Maxframes:5
-    }
+      Maxframes: 5,
+    },
   },
- attackOffset: {
+  attackOffset: {
     x: 0,
-    y:-80,
+    y: -80,
   },
   maxFrames: 4,
   scale: 3,
