@@ -1,54 +1,52 @@
-import { attackBox } from "./attackBox"
-import "socket.io-client"
+import { attackBox } from './attackBox';
+import 'socket.io-client';
 export type Vector = {
-    x:number,y:number
-}
+  x: number;
+  y: number;
+};
 export type PlayerConfig = {
-    position: Vector,
-    velocity: Vector,
-    offset: Vector,
-    color: string,
-    sprites:Sprites
-   attackOffset:Vector 
-    scale:number
-    maxFrames: number;
-
-}
+  position: Vector;
+  velocity: Vector;
+  offset: Vector;
+  color: string;
+  sprites: Sprites;
+  attackOffset: Vector;
+  scale: number;
+  maxFrames: number;
+};
 
 export type BGConfig = {
-    position: Vector,
-    imageSrc:string
-}
+  position: Vector;
+  imageSrc: string;
+};
 export type sprite = {
-    // image: HTMLImageElement;
-    imageSrc: string;
-    Maxframes:number
-}
+  // image: HTMLImageElement;
+  imageSrc: string;
+  Maxframes: number;
+};
 export type Sprites = {
-    idle: sprite,
-    run: sprite,
-    attack1:sprite
-}
+  idle: sprite;
+  run: sprite;
+  attack1: sprite;
+};
 export type Player = {
-    position:Vector,
-    
-    velocity:Vector,
-    color: string,
-    height: number,
-    width:number,
-    lastkey: string,
-    
-    attackBox:attackBox,
-    isAttacking: boolean,
-    draw: (c:CanvasRenderingContext2D) => void,
-    update: (c:CanvasRenderingContext2D) => void,
-    attack: () => void;
-    
-}
+  position: Vector;
 
-declare module  "socket.io-client"{
-    interface Socket{
-        isPlaying:boolean
-    }
+  velocity: Vector;
+  color: string;
+  height: number;
+  width: number;
+  lastkey: string;
 
+  attackBox: attackBox;
+  isAttacking: boolean;
+  draw: (c: CanvasRenderingContext2D) => void;
+  update: (c: CanvasRenderingContext2D) => void;
+  attack: () => void;
+};
+
+declare module 'socket.io-client' {
+  interface Socket {
+    isPlaying: boolean;
   }
+}

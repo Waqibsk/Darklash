@@ -1,18 +1,18 @@
-import "./App.css";
-import Canvas from "./components/canvas/Canvas";
-import GameOver from "./ui/GameOver";
-import TopBar from "./ui/TopBar";
-import Menu from "./ui/Menu";
-import Rooms from "./components/Rooms";
-import { useState } from "react";
+import './App.css';
+import Canvas from './components/canvas/Canvas';
+import GameOver from './ui/GameOver';
+import TopBar from './ui/TopBar';
+import Menu from './ui/Menu';
+import Rooms from './components/Rooms';
+import { useState } from 'react';
 
 function App() {
-  const [mode, setMode] = useState("");
+  const [mode, setMode] = useState('');
   return (
     <>
       {!mode ? (
         <Menu setMode={setMode} />
-      ) : mode !== "single" ? (
+      ) : mode !== 'single' ? (
         <Rooms />
       ) : (
         <div className="w-screen relative ">

@@ -1,10 +1,9 @@
-import React from "react";
-import TopBar from "../../ui/TopBar";
-import GameOver from "../../ui/GameOver";
-import CanvasMP from "./CanvasMP";
-import { CanvasProps } from "../../types/canvas";
-export default function GameMP({role}:CanvasProps) {
-
+import React from 'react';
+import TopBar from '../../ui/TopBar';
+import GameOver from '../../ui/GameOver';
+import CanvasMP from './CanvasMP';
+import { CanvasProps } from '../../types/canvas';
+export default function GameMP({ role }: CanvasProps) {
   return (
     <div>
       <div className="w-screen relative ">

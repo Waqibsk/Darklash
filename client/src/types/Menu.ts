@@ -1,3 +1,3 @@
 export type MenuProps = {
-    setMode: (mode: string) => void;
-}
+  setMode: (mode: string) => void;
+};

@@ -1,4 +1,4 @@
-import { Player } from "../../types/sprite";
+import { Player } from '../../types/sprite';
 
 export const keys = {
   a: {
@@ -16,85 +16,85 @@ export const keys = {
 };
 
 export function setControls(player: Player, enemy: Player) {
-  window.addEventListener("keydown", (event) => {
+  window.addEventListener('keydown', (event) => {
     switch (event.key) {
-      case "a":
+      case 'a':
         keys.a.pressed = true;
-        player.lastkey = "a";
+        player.lastkey = 'a';
         break;
-      case "d":
+      case 'd':
         keys.d.pressed = true;
-        player.lastkey = "d";
+        player.lastkey = 'd';
         break;
-      case "w":
+      case 'w':
         player.velocity.y = -15;
         break;
-      case "j":
+      case 'j':
         keys.j.pressed = true;
-        enemy.lastkey = "j";
+        enemy.lastkey = 'j';
         break;
-      case "l":
+      case 'l':
         keys.l.pressed = true;
-        enemy.lastkey = "l";
+        enemy.lastkey = 'l';
         break;
-      case "i":
+      case 'i':
         enemy.velocity.y = -15;
         break;
-      case "e":
-        player.attack()
+      case 'e':
+        player.attack();
         break;
-      case " ":
-        enemy.attack()
+      case ' ':
+        enemy.attack();
         break;
     }
   });
-  window.addEventListener("keyup", (event) => {
+  window.addEventListener('keyup', (event) => {
     switch (event.key) {
-      case "a":
+      case 'a':
         keys.a.pressed = false;
 
         break;
-      case "d":
+      case 'd':
         keys.d.pressed = false;
         break;
-      case "j":
+      case 'j':
         keys.j.pressed = false;
 
         break;
-      case "l":
+      case 'l':
         keys.l.pressed = false;
         break;
     }
   });
 }
 export function setControlsMP(fighter: Player) {
-  window.addEventListener("keydown", (event) => {
+  window.addEventListener('keydown', (event) => {
     switch (event.key) {
-      case "a":
+      case 'a':
         keys.a.pressed = true;
-        fighter.lastkey = "a";
+        fighter.lastkey = 'a';
         break;
-      case "d":
+      case 'd':
         keys.d.pressed = true;
-        fighter.lastkey = "d";
+        fighter.lastkey = 'd';
         break;
-      case "w":
+      case 'w':
         fighter.velocity.y = -15;
         break;
-     case "e":
-        fighter.attack()
+      case 'e':
+        fighter.attack();
         break;
-         }
+    }
   });
-  window.addEventListener("keyup", (event) => {
+  window.addEventListener('keyup', (event) => {
     switch (event.key) {
-      case "a":
+      case 'a':
         keys.a.pressed = false;
 
         break;
-      case "d":
+      case 'd':
         keys.d.pressed = false;
         break;
-         }
+    }
   });
 }

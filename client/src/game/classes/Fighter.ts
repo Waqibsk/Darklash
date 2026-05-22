@@ -1,22 +1,22 @@
-import { PlayerConfig, sprite, Vector } from "../../types/sprite";
-import { RectangleCollison } from "../utils/rectangleCollison";
-import { gravity } from "../utils/constants";
-import { FinishGame } from "../utils/stopGame";
-import { Sprites } from "../../types/sprite";
-import heroIdle from "../../assets/Knight_1/Idle2.png";
-import enemyIdle from "../../assets/Knight_2/Idle3.png";
-import enemyRun from "../../assets/Knight_2/Run.png";
-import heroRun from "../../assets/Knight_1/Run.png";
-import heroAttack from "../../assets/Knight_1/Attack 2.png";
+import { PlayerConfig, sprite, Vector } from '../../types/sprite';
+import { RectangleCollison } from '../utils/rectangleCollison';
+import { gravity } from '../utils/constants';
+import { FinishGame } from '../utils/stopGame';
+import { Sprites } from '../../types/sprite';
+import heroIdle from '../../assets/Knight_1/Idle2.png';
+import enemyIdle from '../../assets/Knight_2/Idle3.png';
+import enemyRun from '../../assets/Knight_2/Run.png';
+import heroRun from '../../assets/Knight_1/Run.png';
+import heroAttack from '../../assets/Knight_1/Attack 2.png';
 
-import enemyAttack from "../../assets/Knight_2/Attack 1.png";
+import enemyAttack from '../../assets/Knight_2/Attack 1.png';
 class Fighter {
   position: Vector;
   velocity: Vector;
   color: string;
   height: number = 70;
   width: number = 60;
-  lastkey: string = "";
+  lastkey: string = '';
   health: number = 100;
   hasHit: boolean;
   isAttacking: boolean = false;
@@ -74,7 +74,7 @@ class Fighter {
     this.currentFrame = 0;
     this.frameDelay = 8;
     this.frameCount = 0;
-    this.currentSprite = "idle";
+    this.currentSprite = 'idle';
   }
 
   draw(c: CanvasRenderingContext2D) {
@@ -91,7 +91,7 @@ class Fighter {
       this.position.x - this.offset.x,
       this.position.y - this.offset.y,
       viewWidth * this.scale,
-      this.image.height * this.scale
+      this.image.height * this.scale,
     );
   }
 
@@ -130,15 +130,15 @@ class Fighter {
       player.currentFrame === this.sprites.attack1.Maxframes - 1 &&
       !player.hasHit
     ) {
-      console.log("hero  attacked:");
+      console.log('hero  attacked:');
       player.hasHit = true;
       enemy.health -= 20;
       const enemyHealthBar = document.getElementById(
-        "enemy-health"
+        'enemy-health',
       ) as HTMLElement | null;
       if (enemyHealthBar) {
         if (enemy.health >= 0) {
-          enemyHealthBar.style.width = enemy.health + "%";
+          enemyHealthBar.style.width = enemy.health + '%';
         }
       }
     }
@@ -149,15 +149,15 @@ class Fighter {
       enemy.currentFrame == 2 &&
       !enemy.hasHit
     ) {
-      console.log("enemy attacked");
+      console.log('enemy attacked');
       enemy.hasHit = true;
       player.health -= 20;
       const playerHealthBar = document.getElementById(
-        "player-health"
+        'player-health',
       ) as HTMLElement | null;
       if (playerHealthBar) {
         if (player.health >= 0) {
-          playerHealthBar.style.width = player.health + "%";
+          playerHealthBar.style.width = player.health + '%';
         }
       }
     }
@@ -165,40 +165,40 @@ class Fighter {
     if (this.isAttacking && this.currentFrame === this.maxFrames - 1) {
       this.isAttacking = false;
       this.hasHit = false;
-      console.log("HI");
-      this.switchSprite("idle");
+      console.log('HI');
+      this.switchSprite('idle');
     }
-    const time = document.getElementById("timer") as HTMLElement | null;
+    const time = document.getElementById('timer') as HTMLElement | null;
     if (
       (time && parseInt(time.innerText) === 0) ||
       player.health === 0 ||
       enemy.health === 0
     ) {
       const gameOverBox = document.getElementById(
-        "gameOver"
+        'gameOver',
       ) as HTMLElement | null;
       const gameOverTitle = document.getElementById(
-        "gameOverTitle"
+        'gameOverTitle',
       ) as HTMLElement | null;
 
       if (gameOverTitle && gameOverBox) {
         if (time && parseInt(time.innerText) === 0) {
           if (player.health === enemy.health) {
-            gameOverTitle.innerText = "TIED";
+            gameOverTitle.innerText = 'TIED';
           } else if (player.health > enemy.health) {
-            gameOverTitle.innerText = "HERO WINS";
+            gameOverTitle.innerText = 'HERO WINS';
           } else {
-            gameOverTitle.innerText = "ENEMY WINS";
+            gameOverTitle.innerText = 'ENEMY WINS';
           }
         } else {
           if (player.health === 0) {
-            gameOverTitle.innerText = "ENEMY WINS";
+            gameOverTitle.innerText = 'ENEMY WINS';
           } else if (enemy.health === 0) {
-            gameOverTitle.innerText = "HERO WINS";
+            gameOverTitle.innerText = 'HERO WINS';
           }
         }
         FinishGame(true);
-        gameOverBox.classList.remove("hidden");
+        gameOverBox.classList.remove('hidden');
       }
     }
   }
@@ -206,37 +206,37 @@ class Fighter {
   attack() {
     this.animationComplete = false;
     this.isAttacking = true;
-    this.switchSprite("attack1");
+    this.switchSprite('attack1');
   }
 
   switchSprite(sprite: string) {
-    if (this.currentSprite === "attack1" && !this.animationComplete) return;
+    if (this.currentSprite === 'attack1' && !this.animationComplete) return;
     switch (sprite) {
-      case "idle":
-        if (this.currentSprite !== "idle") {
+      case 'idle':
+        if (this.currentSprite !== 'idle') {
           this.image.src = this.sprites.idle.imageSrc;
           this.maxFrames = this.sprites.idle.Maxframes;
 
           this.currentFrame = 0;
-          this.currentSprite = "idle";
+          this.currentSprite = 'idle';
         }
 
         break;
-      case "run":
-        if (this.currentSprite !== "run") {
+      case 'run':
+        if (this.currentSprite !== 'run') {
           this.image.src = this.sprites.run.imageSrc;
           this.maxFrames = this.sprites.run.Maxframes;
-          this.currentSprite = "run";
+          this.currentSprite = 'run';
           this.currentFrame = 0;
         }
 
         break;
-      case "attack1":
-        if (this.currentSprite !== "attack1") {
+      case 'attack1':
+        if (this.currentSprite !== 'attack1') {
           this.image.src = this.sprites.attack1.imageSrc;
           this.maxFrames = this.sprites.attack1.Maxframes;
           this.currentFrame = 0;
-          this.currentSprite = "attack1";
+          this.currentSprite = 'attack1';
         }
 
         break;
@@ -271,7 +271,7 @@ export const player = new Fighter({
   position: { x: 0, y: 0 },
   velocity: { x: 0, y: 0 },
   offset: { x: 0, y: 60 },
-  color: "pink",
+  color: 'pink',
   sprites: {
     idle: {
       imageSrc: heroIdle,
@@ -297,7 +297,7 @@ export const enemy = new Fighter({
   position: { x: 560, y: 0 },
   velocity: { x: 0, y: 0 },
   offset: { x: 0, y: 60 },
-  color: "orange",
+  color: 'orange',
   sprites: {
     idle: {
       imageSrc: enemyIdle,

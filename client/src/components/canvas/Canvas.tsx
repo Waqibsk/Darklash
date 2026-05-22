@@ -1,6 +1,6 @@
-import { useEffect } from "react";
-import { useRef } from "react";
-import { startGame } from "../../game/gameLoader";
+import { useEffect } from 'react';
+import { useRef } from 'react';
+import { startGame } from '../../game/gameLoader';
 export default function Canvas() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   useEffect(() => {
@@ -10,7 +10,7 @@ export default function Canvas() {
     }
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight - 100;
-    const canvasContext = canvas.getContext("2d");
+    const canvasContext = canvas.getContext('2d');
     if (!canvasContext) {
       return;
     }

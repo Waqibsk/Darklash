@@ -1,3 +1,3 @@
-export type CanvasProps={
-  role:string
-}
+export type CanvasProps = {
+  role: string;
+};
